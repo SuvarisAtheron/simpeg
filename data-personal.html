@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Personal - Sistem Kepegawaian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body>
+
+    <aside class="main-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/img/logo.png" alt="Logo Instansi" class="sidebar-logo">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li><a href="data-personal.html"><i class="fas fa-id-card"></i><span>Data Personal</span></a></li>
+            <li><a href="riwayat-pegawai.html"><i class="fas fa-history"></i><span>Riwayat Pegawai</span></a></li>
+            <li><a href="manajemen-arsip.html"><i class="fas fa-archive"></i><span>Manajemen Arsip</span></a></li>
+            <li><a href="#"><i class="fas fa-database"></i><span>Master Data</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-line"></i><span>KGB</span></a></li>
+            <li><a href="#"><i class="fas fa-calendar-alt"></i><span>Cuti</span></a></li>
+            <li><a href="#"><i class="fas fa-briefcase"></i><span>Penugasan</span></a></li>
+            <li><a href="#"><i class="fas fa-walking"></i><span>Pensiun</span></a></li>
+            <li><a href="#"><i class="fas fa-sync-alt"></i><span>Rotasi</span></a></li>
+            <li><a href="#"><i class="fas fa-exchange-alt"></i><span>Mutasi</span></a></li>
+            <li><a href="#"><i class="fas fa-folder-plus"></i><span>Arsip Lainnya</span></a></li>
+            <li><a href="#"><i class="fas fa-file-signature"></i><span>Kontrak Kerja</span></a></li>
+            <li><a href="#"><i class="fas fa-envelope-open-text"></i><span>Surat Perintah</span></a></li>
+            <li><a href="#"><i class="fas fa-mail-bulk"></i><span>Manajemen Surat</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-pie"></i><span>Laporan</span></a></li>
+        </ul>
+    </aside>
+
+    <header class="main-header">
+        <div class="header-left">
+            <a href="#" id="toggleSidebarBtn"><i class="fas fa-bars"></i></a>
+            <a href="#"><i class="fas fa-search"></i></a>
+            <a href="#"><i class="fas fa-th-large"></i></a>
+        </div>
+        <div class="header-right">
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1 id="content-title">Data Personal</h1>
+            <div class="ms-auto">
+                <a href="#" class="btn btn-outline-secondary" id="btn-edit-data" style="display: none;">
+                    <i class="fas fa-pencil-alt"></i> Edit Data
+                </a>
+                <a href="tambah-data.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Tambah Data Baru
+                </a>
+            </div>
+        </div>
+
+        <form class="search-form" id="search-form">
+            <div class="search-field-group">
+                <label for="search-input">Apa yang Anda cari?</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="search-input" placeholder="Cari Nama, NIK, NIP...">
+                </div>
+            </div>
+            <div class="search-field-group">
+                <label for="search-history-dropdown">Nama yang baru baru ini dicari</label>
+                <select id="search-history-dropdown">
+                    <option value="">-- Pilih Riwayat --</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary search-button">Cari</button>
+        </form>
+
+        <div class="personal-data-tabs">
+            <button class="tab-button active" data-tab="informasi-dasar">Informasi Dasar</button>
+            <button class="tab-button" data-tab="informasi-fisik">Informasi Fisik</button>
+            <button class="tab-button" data-tab="informasi-kontak">Informasi Kontak</button>
+            <button class="tab-button" data-tab="informasi-tambahan">Informasi Tambahan</button>
+            <button class="tab-button" data-tab="data-orang-tua">Data Orang Tua</button>
+            <button class="tab-button" data-tab="data-pasangan">Data Suami/Istri</button>
+            <button class="tab-button" data-tab="data-anak">Data Anak</button>
+            <button class="tab-button" data-tab="data-saudara">Data Saudara Kandung</button>
+        </div>
+
+        <div class="tab-content-wrapper">
+            <div id="informasi-dasar" class="tab-pane active">
+                <div class="form-grid">
+                    <div class="form-group"><label>Nama:</label><input type="text" id="nama" disabled></div>
+                    <div class="form-group"><label>NIK:</label><input type="text" id="nik" disabled></div>
+                    <div class="form-group"><label>NIP:</label><input type="text" id="nip" disabled></div>
+                    <div class="form-group"><label>Kartu Pegawai:</label><input type="text" id="kartu-pegawai"
+                            placeholder="Tidak ada file" disabled></div>
+                    <div class="form-group"><label>Jenis Kelamin:</label><input type="text" id="jenis-kelamin" disabled>
+                    </div>
+                    <div class="form-group"><label>Golongan Darah:</label><input type="text" id="golongan-darah"
+                            disabled></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text" id="tempat-lahir" disabled>
+                    </div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="text" id="tanggal-lahir" disabled>
+                    </div>
+                    <div class="form-group"><label>Agama:</label><input type="text" id="agama" disabled></div>
+                    <div class="form-group"><label>Status Pernikahan:</label><input type="text" id="status-pernikahan"
+                            disabled></div>
+                </div>
+            </div>
+
+            <div id="informasi-fisik" class="tab-pane">
+                <div class="form-grid">
+                    <div class="form-group"><label>Tinggi Badan :</label><input type="text" id="tinggi-badan" disabled>
+                    </div>
+                    <div class="form-group"><label>Berat Badan :</label><input type="text" id="berat-badan" disabled>
+                    </div>
+                    <div class="form-group"><label>Rambut :</label><input type="text" id="rambut" disabled></div>
+                    <div class="form-group"><label>Bentuk Muka :</label><input type="text" id="bentuk-muka" disabled>
+                    </div>
+                    <div class="form-group"><label>Kulit :</label><input type="text" id="kulit" disabled></div>
+                    <div class="form-group"><label>Ciri Khas :</label><input type="text" id="ciri-khas" disabled></div>
+                    <div class="form-group"><label>Cacat Tubuh :</label><input type="text" id="cacat-tubuh" disabled>
+                    </div>
+                    <div class="form-group"><label>Hobi :</label><input type="text" id="hobi" disabled></div>
+                </div>
+            </div>
+
+            <div id="informasi-kontak" class="tab-pane">
+                <div class="form-grid">
+                    <div class="form-group"><label>Email :</label><input type="text" id="email" disabled></div>
+                    <div class="form-group"><label>No. HP :</label><input type="text" id="no-hp" disabled></div>
+                    <div class="form-group"><label>Alamat :</label><input type="text" id="alamat" disabled></div>
+                    <div class="form-group"><label>Kecamatan :</label><input type="text" id="kecamatan" disabled></div>
+                    <div class="form-group"><label>Kelurahan :</label><input type="text" id="kelurahan" disabled></div>
+                    <div class="form-group"><label>Kabupaten :</label><input type="text" id="kabupaten" disabled></div>
+                    <div class="form-group"><label>Provinsi :</label><input type="text" id="provinsi" disabled></div>
+                    <div class="form-group"><label>Kode Pos :</label><input type="text" id="kode-pos" disabled></div>
+                    <div class="form-group"><label>No Taspen :</label><input type="text" id="no-taspen" disabled></div>
+                    <div class="form-group"><label>No BPJS :</label><input type="text" id="no-bpjs" disabled></div>
+                    <div class="form-group"><label>NPWP :</label><input type="text" id="npwp" disabled></div>
+                    <div class="form-group"><label>No Karis/Karsu :</label><input type="text" id="no-karis-karsu"
+                            disabled></div>
+                </div>
+            </div>
+
+            <div id="informasi-tambahan" class="tab-pane">
+                <div class="form-grid">
+                    <div class="form-group"><label>Kampus Terakhir:</label><input type="text" id="kampus-terakhir"
+                            disabled></div>
+                    <div class="form-group"><label>Jenjang Pendidikan:</label><input type="text" id="jenjang-pendidikan"
+                            disabled></div>
+                    <div class="form-group"><label>Jurusan:</label><input type="text" id="jurusan" disabled></div>
+                    <div class="form-group"><label>Tahun Lulus:</label><input type="text" id="tahun-lulus" disabled>
+                    </div>
+                    <div class="form-group"><label>Gelar Depan:</label><input type="text" id="gelar-depan" disabled>
+                    </div>
+                    <div class="form-group"><label>Gelar Belakang:</label><input type="text" id="gelar-belakang"
+                            disabled></div>
+                    <div class="form-group"><label>Status Pegawai:</label><input type="text" id="status-pegawai"
+                            disabled></div>
+                    <div class="form-group"><label>Golongan Terakhir:</label><input type="text" id="golongan-terakhir"
+                            disabled></div>
+                    <div class="form-group"><label>TMT CPNS:</label><input type="text" id="tmt-cpns" disabled></div>
+                    <div class="form-group"><label>TMT PNS:</label><input type="text" id="tmt-pns" disabled></div>
+                </div>
+            </div>
+            <div id="data-orang-tua" class="tab-pane">
+                <h5 class="data-card-title"
+                    style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-bottom: 20px;">Data
+                    Bapak Kandung</h5>
+                <div class="form-grid">
+                    <div class="form-group"><label>Nama:</label><input type="text" id="nama-bapak-kandung" disabled>
+                    </div>
+                    <div class="form-group"><label>NIK:</label><input type="text" id="nik-bapak-kandung" disabled></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text"
+                            id="tempat-lahir-bapak-kandung" disabled></div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="text"
+                            id="tanggal-lahir-bapak-kandung" disabled></div>
+                    <div class="form-group"><label>Pekerjaan:</label><input type="text" id="pekerjaan-bapak-kandung"
+                            disabled></div>
+                </div>
+
+                <h5 class="data-card-title"
+                    style="background-color: #f8f9fa; padding: 10px; border-radius: 5px; margin-top: 30px; margin-bottom: 20px;">
+                    Data Ibu Kandung</h5>
+                <div class="form-grid">
+                    <div class="form-group"><label>Nama:</label><input type="text" id="nama-ibu-kandung" disabled></div>
+                    <div class="form-group"><label>NIK:</label><input type="text" id="nik-ibu-kandung" disabled></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text" id="tempat-lahir-ibu-kandung"
+                            disabled></div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="text"
+                            id="tanggal-lahir-ibu-kandung" disabled></div>
+                    <div class="form-group"><label>Pekerjaan:</label><input type="text" id="pekerjaan-ibu-kandung"
+                            disabled></div>
+                </div>
+            </div>
+            <div id="data-pasangan" class="tab-pane">
+                <div class="form-grid">
+                    <div class="form-group"><label>Nama Pasangan:</label><input type="text" id="nama-pasangan" disabled>
+                    </div>
+                    <div class="form-group"><label>NIK:</label><input type="text" id="nik-pasangan" disabled></div>
+                    <div class="form-group"><label>Status Pasangan:</label><input type="text" id="status-pasangan"
+                            disabled></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text" id="tempat-lahir-pasangan"
+                            disabled></div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="text" id="tanggal-lahir-pasangan"
+                            disabled></div>
+                    <div class="form-group"><label>Status Pernikahan:</label><input type="text"
+                            id="status-pernikahan-pasangan" disabled></div>
+                    <div class="form-group"><label>Tanggal Pernikahan:</label><input type="text" id="tanggal-pernikahan"
+                            disabled></div>
+                    <div class="form-group"><label>Akta Pernikahan:</label><input type="text" id="akta-pernikahan"
+                            disabled></div>
+                    <div class="form-group"><label>Tanggal Perceraian:</label><input type="text" id="tanggal-perceraian"
+                            disabled></div>
+                    <div class="form-group"><label>Akta Perceraian:</label><input type="text" id="akta-perceraian"
+                            disabled></div>
+                    <div class="form-group"><label>Pekerjaan Pasangan:</label><input type="text" id="pekerjaan-pasangan"
+                            disabled></div>
+                </div>
+            </div>
+            <div id="data-anak" class="tab-pane">
+                <div id="data-anak-list">
+                </div>
+                <p id="no-data-anak" class="text-muted" style="display: none;">Data anak tidak ditemukan.</p>
+            </div>
+            <div id="data-saudara" class="tab-pane">
+                <div id="data-saudara-list">
+                </div>
+                <p id="no-data-saudara" class="text-muted" style="display: none;">Data saudara tidak ditemukan.</p>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="searchResultsModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Hasil Pencarian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-results-body"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+</body>
+
+</html>

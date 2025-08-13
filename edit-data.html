@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Data Pegawai - Sistem Kepegawaian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body>
+    <aside class="main-sidebar" id="sidebar">
+        <div class="sidebar-header"><img src="assets/img/logo.png" alt="Logo Instansi" class="sidebar-logo"></div>
+        <ul class="sidebar-menu">
+            <li><a href="data-personal.html"><i class="fas fa-id-card"></i><span>Data Personal</span></a></li>
+        </ul>
+    </aside>
+
+    <header class="main-header">
+        <div class="header-left"><a href="#" id="toggleSidebarBtn"><i class="fas fa-bars"></i></a></div>
+        <div class="header-right"><a href="#"><i class="fas fa-user"></i></a></div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1 id="content-title">Edit Data Pegawai</h1>
+        </div>
+
+        <form id="form-edit-pegawai" class="p-4 bg-white rounded shadow-sm" novalidate>
+
+            <!-- semua form-step copy dari tambah-data.html -->
+            <!-- Cukup copy persis dari tambah-data.html -->
+            <!-- Hanya ganti id form menjadi form-edit-pegawai -->
+            <!-- Dan tombol terakhir ganti jadi "Update Data" -->
+
+            <div class="form-step active">
+                <h4 class="mb-3">Langkah 1 dari 8: Informasi Dasar</h4>
+                <div class="form-grid">
+                    <div class="form-group"><label>Nama Lengkap:</label><input type="text" name="pegawai[nama_lengkap]"
+                            class="form-control" required></div>
+                    <div class="form-group"><label>NIK:</label><input type="text" name="pegawai[nik]"
+                            class="form-control" required></div>
+                    <div class="form-group"><label>NIP:</label><input type="text" name="pegawai[nip]"
+                            class="form-control" required></div>
+                    <div class="form-group"><label>Kartu Pegawai:</label><input type="text"
+                            name="pegawai[kartu_pegawai]" class="form-control"></div>
+                    <div class="form-group"><label>Jenis Kelamin:</label><select name="pegawai[jenis_kelamin]"
+                            class="form-select" required>
+                            <option value="">Pilih</option>
+                            <option value="LAKI-LAKI">Laki-laki</option>
+                            <option value="PEREMPUAN">Perempuan</option>
+                        </select></div>
+                    <div class="form-group"><label>Golongan Darah:</label><select name="pegawai[golongan_darah]"
+                            class="form-select">
+                            <option value="">Pilih</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="AB">AB</option>
+                            <option value="O">O</option>
+                        </select></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text" name="pegawai[tempat_lahir]"
+                            class="form-control" required></div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="date"
+                            name="pegawai[tanggal_lahir]" class="form-control" required></div>
+                    <div class="form-group"><label>Agama:</label><input type="text" name="pegawai[agama]"
+                            class="form-control" required></div>
+                    <div class="form-group"><label>Status Pernikahan:</label><input type="text"
+                            name="pegawai[status_pernikahan]" class="form-control" required></div>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <h4 class="mb-3">Langkah 2 dari 8: Informasi Fisik</h4>
+                <div class="form-grid">
+                    <div class="form-group"><label>Tinggi Badan (cm):</label><input type="number"
+                            name="fisik[tinggi_badan]" class="form-control"></div>
+                    <div class="form-group"><label>Berat Badan (kg):</label><input type="number"
+                            name="fisik[berat_badan]" class="form-control"></div>
+                    <div class="form-group"><label>Rambut:</label><input type="text" name="fisik[rambut]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Bentuk Muka:</label><input type="text" name="fisik[bentuk_muka]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Kulit:</label><input type="text" name="fisik[kulit]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Ciri Khas:</label><input type="text" name="fisik[ciri_khas]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Cacat Tubuh:</label><input type="text" name="fisik[cacat_tubuh]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Hobi:</label><input type="text" name="fisik[hobi]"
+                            class="form-control"></div>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <h4 class="mb-3">Langkah 3 dari 8: Informasi Kontak</h4>
+                <div class="form-grid">
+                    <div class="form-group"><label>Email :</label><input type="email" name="kontak[email]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>No. HP :</label><input type="text" name="kontak[no_hp]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Alamat :</label><input type="text" name="kontak[alamat]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Kecamatan :</label><input type="text" name="kontak[kecamatan]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Kelurahan :</label><input type="text" name="kontak[kelurahan]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Kabupaten :</label><input type="text" name="kontak[kabupaten]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Provinsi :</label><input type="text" name="kontak[provinsi]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Kode Pos :</label><input type="text" name="kontak[kode_pos]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>No Taspen :</label><input type="text" name="kontak[no_taspen]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>No BPJS :</label><input type="text" name="kontak[no_bpjs]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>NPWP :</label><input type="text" name="kontak[npwp]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>No Karis/Karsu :</label><input type="text"
+                            name="kontak[no_karis_karsu]" class="form-control"></div>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <h4 class="mb-3">Langkah 4 dari 8: Informasi Tambahan</h4>
+                <div class="form-grid">
+                    <div class="form-group"><label>Kampus Terakhir:</label><input type="text"
+                            name="karir[kampus_terakhir]" class="form-control"></div>
+                    <div class="form-group"><label>Jenjang Pendidikan:</label><input type="text"
+                            name="karir[jenjang_pendidikan]" class="form-control"></div>
+                    <div class="form-group"><label>Jurusan:</label><input type="text" name="karir[jurusan]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Tahun Lulus:</label><input type="text" name="karir[tahun_lulus]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Gelar Depan:</label><input type="text" name="karir[gelar_depan]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Gelar Belakang:</label><input type="text"
+                            name="karir[gelar_belakang]" class="form-control"></div>
+                    <div class="form-group"><label>Status Pegawai:</label><input type="text"
+                            name="karir[status_pegawai]" class="form-control"></div>
+                    <div class="form-group"><label>Golongan Terakhir:</label><input type="text"
+                            name="karir[golongan_terakhir]" class="form-control"></div>
+                    <div class="form-group"><label>TMT CPNS:</label><input type="date" name="karir[tmt_cpns]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>TMT PNS:</label><input type="date" name="karir[tmt_pns]"
+                            class="form-control"></div>
+                </div>
+            </div>
+
+             <div class="form-step">
+                <h4 class="mb-3">Langkah 5 dari 8: Data Orang Tua</h4>
+                <h5 class="data-card-title">Data Bapak Kandung</h5>
+                <div class="form-grid">
+                    <input type="hidden" name="orang_tua[bapak][status_orang_tua]" value="bapak kandung">
+                    <div class="form-group"><label>Nama:</label><input type="text"
+                            name="orang_tua[bapak][nama_orang_tua]" class="form-control"></div>
+                    <div class="form-group"><label>NIK:</label><input type="text" name="orang_tua[bapak][nik]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text"
+                            name="orang_tua[bapak][tempat_lahir]" class="form-control"></div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="date"
+                            name="orang_tua[bapak][tanggal_lahir]" class="form-control"></div>
+                    <div class="form-group"><label>Pekerjaan:</label><input type="text"
+                            name="orang_tua[bapak][pekerjaan]" class="form-control"></div>
+                </div>
+                <h5 class="data-card-title mt-4">Data Ibu Kandung</h5>
+                <div class="form-grid">
+                    <input type="hidden" name="orang_tua[ibu][status_orang_tua]" value="ibu kandung">
+                    <div class="form-group"><label>Nama:</label><input type="text" name="orang_tua[ibu][nama_orang_tua]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>NIK:</label><input type="text" name="orang_tua[ibu][nik]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text"
+                            name="orang_tua[ibu][tempat_lahir]" class="form-control"></div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="date"
+                            name="orang_tua[ibu][tanggal_lahir]" class="form-control"></div>
+                    <div class="form-group"><label>Pekerjaan:</label><input type="text" name="orang_tua[ibu][pekerjaan]"
+                            class="form-control"></div>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <h4 class="mb-3">Langkah 6 dari 8: Data Suami/Istri</h4>
+                <div class="form-grid">
+                    <div class="form-group"><label>Nama Pasangan:</label><input type="text"
+                            name="pasangan[0][nama_pasangan]" class="form-control"></div>
+                    <div class="form-group"><label>NIK:</label><input type="text" name="pasangan[0][nik]"
+                            class="form-control"></div>
+                    <div class="form-group"><label>Status Pasangan:</label><select name="pasangan[0][status_pasangan]"
+                            class="form-select">
+                            <option value="">Pilih</option>
+                            <option value="suami">Suami</option>
+                            <option value="istri">Istri</option>
+                        </select></div>
+                    <div class="form-group"><label>Tempat Lahir:</label><input type="text"
+                            name="pasangan[0][tempat_lahir]" class="form-control"></div>
+                    <div class="form-group"><label>Tanggal Lahir:</label><input type="date"
+                            name="pasangan[0][tanggal_lahir]" class="form-control"></div>
+                    <div class="form-group"><label>Status Pernikahan:</label><input type="text"
+                            name="pasangan[0][status_pernikahan]" class="form-control"></div>
+                    <div class="form-group"><label>Tanggal Pernikahan:</label><input type="date"
+                            name="pasangan[0][tanggal_pernikahan]" class="form-control"></div>
+                    <div class="form-group"><label>Akta Pernikahan:</label><input type="text"
+                            name="pasangan[0][akta_pernikahan]" class="form-control"></div>
+                    <div class="form-group"><label>Tanggal Perceraian:</label><input type="date"
+                            name="pasangan[0][tanggal_perceraian]" class="form-control"></div>
+                    <div class="form-group"><label>Akta Perceraian:</label><input type="text"
+                            name="pasangan[0][akta_perceraian]" class="form-control"></div>
+                    <div class="form-group"><label>Pekerjaan Pasangan:</label><input type="text"
+                            name="pasangan[0][pekerjaan]" class="form-control"></div>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Langkah 7 dari 8: Data Anak</h4>
+                    <button type="button" id="btn-tambah-anak" class="btn btn-sm btn-success"><i
+                            class="fas fa-plus"></i> Tambah Anak</button>
+                </div>
+                <div id="container-anak"></div>
+            </div>
+
+            <div class="form-step">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4>Langkah 8 dari 8: Data Saudara Kandung</h4>
+                    <button type="button" id="btn-tambah-saudara" class="btn btn-sm btn-success"><i
+                            class="fas fa-plus"></i> Tambah Saudara</button>
+                </div>
+                <div id="container-saudara"></div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-4">
+                <button type="button" id="btn-prev" class="btn btn-secondary me-2"
+                    style="display: none;">Previous</button>
+                <button type="button" id="btn-next" class="btn btn-primary">Next</button>
+                <button type="submit" id="btn-submit" class="btn btn-primary" style="display: none;">Update Data</button>
+            </div>
+        </form>
+    </main>
+
+    <template id="template-anak">
+        <div class="data-card mb-3 position-relative">
+            <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" aria-label="Close"
+                onclick="this.closest('.data-card').remove()"></button>
+            <div class="form-grid">
+                <div class="form-group"><label>Nama Anak:</label><input type="text" name="anak[][nama_anak]"
+                        class="form-control"></div>
+                <div class="form-group"><label>NIK:</label><input type="text" name="anak[][nik]" class="form-control">
+                </div>
+                <div class="form-group"><label>Status Anak:</label><select name="anak[][status_anak]"
+                        class="form-select">
+                        <option value="">Pilih</option>
+                        <option value="anak kandung">Anak Kandung</option>
+                        <option value="anak angkat">Anak Angkat</option>
+                    </select></div>
+                <div class="form-group"><label>Tempat Lahir:</label><input type="text" name="anak[][tempat_lahir]"
+                        class="form-control"></div>
+                <div class="form-group"><label>Tanggal Lahir:</label><input type="date" name="anak[][tanggal_lahir]"
+                        class="form-control"></div>
+                <div class="form-group"><label>Akta Kelahiran:</label><input type="text" name="anak[][akta_kelahiran]"
+                        class="form-control"></div>
+                <div class="form-group"><label>Nama Bapak/Ibu dari anak:</label><input type="text"
+                        name="anak[][nama_ortu_pasangan]" class="form-control"></div>
+                <div class="form-group"><label>Jenis Kelamin:</label><select name="anak[][jenis_kelamin]"
+                        class="form-select">
+                        <option value="">Pilih</option>
+                        <option value="laki-laki">Laki-laki</option>
+                        <option value="perempuan">Perempuan</option>
+                    </select></div>
+                <div class="form-group"><label>Jenjang Pendidikan:</label><input type="text"
+                        name="anak[][jenjang_pendidikan]" class="form-control"></div>
+                <div class="form-group"><label>Pekerjaan Anak:</label><input type="text" name="anak[][pekerjaan]"
+                        class="form-control"></div>
+            </div>
+        </div>
+    </template>
+
+    <template id="template-saudara">
+        <div class="data-card mb-3 position-relative">
+            <button type="button" class="btn-close position-absolute top-0 end-0 mt-2 me-2" aria-label="Close"
+                onclick="this.closest('.data-card').remove()"></button>
+            <div class="form-grid">
+                <div class="form-group"><label>Nama Saudara:</label><input type="text" name="saudara[][nama_saudara]"
+                        class="form-control"></div>
+                <div class="form-group"><label>NIK:</label><input type="text" name="saudara[][nik]"
+                        class="form-control"></div>
+                <div class="form-group"><label>Status Saudara:</label><select name="saudara[][status_saudara]"
+                        class="form-select">
+                        <option value="">Pilih</option>
+                        <option value="kakak kandung">Kakak Kandung</option>
+                        <option value="adik kandung">Adik Kandung</option>
+                    </select></div>
+                <div class="form-group"><label>Tempat Lahir:</label><input type="text" name="saudara[][tempat_lahir]"
+                        class="form-control"></div>
+                <div class="form-group"><label>Tanggal Lahir:</label><input type="date" name="saudara[][tanggal_lahir]"
+                        class="form-control"></div>
+                <div class="form-group"><label>Jenis Kelamin:</label><select name="saudara[][jenis_kelamin]"
+                        class="form-select">
+                        <option value="">Pilih</option>
+                        <option value="laki-laki">Laki-laki</option>
+                        <option value="perempuan">Perempuan</option>
+                    </select></div>
+                <div class="form-group"><label>Pekerjaan Saudara:</label><input type="text" name="saudara[][pekerjaan]"
+                        class="form-control"></div>
+                <div class="form-group"><label>Keterangan:</label><select name="saudara[][keterangan]"
+                        class="form-select">
+                        <option value="">Pilih</option>
+                        <option value="masih hidup">Masih Hidup</option>
+                        <option value="sudah meninggal">Sudah Meninggal</option>
+                    </select></div>
+            </div>
+        </div>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/edit-data.js"></script>
+</body>
+</html>
