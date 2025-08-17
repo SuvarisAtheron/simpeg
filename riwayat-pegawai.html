@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
 </head>
+
 <body>
     <aside class="main-sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -19,16 +21,16 @@
             <li><a href="riwayat-pegawai.html"><i class="fas fa-history"></i><span>Riwayat Pegawai</span></a></li>
             <li><a href="manajemen-arsip.html"><i class="fas fa-archive"></i><span>Manajemen Arsip</span></a></li>
             <li><a href="#"><i class="fas fa-database"></i><span>Master Data</span></a></li>
-            <li><a href="#"><i class="fas fa-chart-line"></i><span>KGB</span></a></li>
-            <li><a href="#"><i class="fas fa-calendar-alt"></i><span>Cuti</span></a></li>
-            <li><a href="#"><i class="fas fa-briefcase"></i><span>Penugasan</span></a></li>
-            <li><a href="#"><i class="fas fa-walking"></i><span>Pensiun</span></a></li>
-            <li><a href="#"><i class="fas fa-sync-alt"></i><span>Rotasi</span></a></li>
-            <li><a href="#"><i class="fas fa-exchange-alt"></i><span>Mutasi</span></a></li>
+            <li><a href="kgb.html"><i class="fas fa-chart-line"></i><span>KGB</span></a></li>
+            <li><a href="cuti.html"><i class="fas fa-calendar-alt"></i><span>Cuti</span></a></li>
+            <li><a href="penugasan.html"><i class="fas fa-briefcase"></i><span>Penugasan</span></a></li>
+            <li><a href="pensiun.html"><i class="fas fa-walking"></i><span>Pensiun</span></a></li>
+            <li><a href="rotasi.html"><i class="fas fa-sync-alt"></i><span>Rotasi</span></a></li>
+            <li><a href="mutasi.html"><i class="fas fa-exchange-alt"></i><span>Mutasi</span></a></li>
             <li><a href="#"><i class="fas fa-folder-plus"></i><span>Arsip Lainnya</span></a></li>
             <li><a href="#"><i class="fas fa-file-signature"></i><span>Kontrak Kerja</span></a></li>
-            <li><a href="#"><i class="fas fa-envelope-open-text"></i><span>Surat Perintah</span></a></li>
-            <li><a href="#"><i class="fas fa-mail-bulk"></i><span>Manajemen Surat</span></a></li>
+            <li><a href="surat-perintah.html"><i class="fas fa-envelope-open-text"></i><span>Surat Perintah</span></a></li>
+            <li><a href="surat-rekomendasi.html"><i class="fas fa-mail-bulk"></i><span>Manajemen Surat</span></a></li>
             <li><a href="#"><i class="fas fa-chart-pie"></i><span>Laporan</span></a></li>
         </ul>
     </aside>
@@ -57,16 +59,17 @@
             </div>
             <button type="submit" class="btn btn-primary search-button">Cari</button>
         </form>
-        
+
         <div id="pegawai-info-card" class="card mt-4" style="display: none;">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Riwayat untuk: <span id="nama-pegawai-terpilih" class="fw-bold"></span></h5>
-                <button class="btn btn-primary" id="btn-tambah-riwayat" data-bs-toggle="modal" data-bs-target="#tambahRiwayatModal">
+                <button class="btn btn-primary" id="btn-tambah-riwayat" data-bs-toggle="modal"
+                    data-bs-target="#tambahRiwayatModal">
                     <i class="fas fa-plus"></i> Tambah Riwayat Baru
                 </button>
             </div>
         </div>
-        
+
         <div id="riwayat-content" style="display: none;">
             <div class="personal-data-tabs">
                 <button class="tab-button active" data-tab="bahasa">Bahasa</button>
@@ -78,16 +81,30 @@
                 <button class="tab-button" data-tab="penghargaan">Penghargaan</button>
             </div>
             <div class="tab-content-wrapper">
-                <div id="bahasa" class="tab-pane active"><div id="container-bahasa"></div></div>
-                <div id="jabatan" class="tab-pane"><div id="container-jabatan"></div></div>
-                <div id="pangkat" class="tab-pane"><div id="container-pangkat"></div></div>
-                <div id="organisasi" class="tab-pane"><div id="container-organisasi"></div></div>
-                <div id="pendidikan" class="tab-pane"><div id="container-pendidikan"></div></div>
-                <div id="diklat" class="tab-pane"><div id="container-diklat"></div></div>
-                <div id="penghargaan" class="tab-pane"><div id="container-penghargaan"></div></div>
+                <div id="bahasa" class="tab-pane active">
+                    <div id="container-bahasa"></div>
+                </div>
+                <div id="jabatan" class="tab-pane">
+                    <div id="container-jabatan"></div>
+                </div>
+                <div id="pangkat" class="tab-pane">
+                    <div id="container-pangkat"></div>
+                </div>
+                <div id="organisasi" class="tab-pane">
+                    <div id="container-organisasi"></div>
+                </div>
+                <div id="pendidikan" class="tab-pane">
+                    <div id="container-pendidikan"></div>
+                </div>
+                <div id="diklat" class="tab-pane">
+                    <div id="container-diklat"></div>
+                </div>
+                <div id="penghargaan" class="tab-pane">
+                    <div id="container-penghargaan"></div>
+                </div>
             </div>
         </div>
-        
+
         <div id="initial-message" class="text-center p-5 text-muted">
             <h4>Silakan Cari Pegawai</h4>
             <p>Masukkan NIP atau Nama pegawai untuk menampilkan data riwayat.</p>
@@ -97,22 +114,28 @@
     <div class="modal fade" id="searchResultsModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Hasil Pencarian</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Hasil Pencarian</h5><button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body" id="modal-results-body"></div>
             </div>
         </div>
     </div>
-    
+
     <div class="modal fade" id="tambahRiwayatModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header"><h5 class="modal-title">Tambah Riwayat Baru</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+                <div class="modal-header">
+                    <h5 class="modal-title">Tambah Riwayat Baru</h5><button type="button" class="btn-close"
+                        data-bs-dismiss="modal"></button>
+                </div>
                 <div class="modal-body">
                     <form id="form-tambah-riwayat">
                         <input type="hidden" name="pegawai_id">
                         <div class="mb-4">
                             <label for="jenis-riwayat-select" class="form-label fw-bold">1. Pilih Jenis Riwayat</label>
-                            <select id="jenis-riwayat-select" class="form-select">
+                            <select id="jenis-riwayat-select" name="jenis_riwayat" class="form-select">
                                 <option value="">-- Pilih Jenis --</option>
                                 <option value="bahasa">Penguasaan Bahasa</option>
                                 <option value="jabatan">Jabatan</option>
@@ -124,9 +147,9 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                             <label class="form-label fw-bold">2. Isi Detail Data</label>
-                             <div id="form-dinamis-container">
-                                </div>
+                            <label class="form-label fw-bold">2. Isi Detail Data</label>
+                            <div id="form-dinamis-container">
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -138,7 +161,34 @@
         </div>
     </div>
 
+    <div class="modal fade" id="editRiwayatModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRiwayatModalLabel">Edit Riwayat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-edit-riwayat">
+                        <input type="hidden" name="riwayat_id">
+                        <input type="hidden" name="jenis_riwayat">
+
+                        <p class="mb-3">Anda sedang mengubah data riwayat untuk pegawai yang dipilih.</p>
+
+                        <div id="form-edit-dinamis-container">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary" form="form-edit-riwayat">Update Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/riwayat-pegawai.js"></script>
 </body>
+
 </html>

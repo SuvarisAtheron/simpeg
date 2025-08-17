@@ -1,117 +1,164 @@
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- SIMULASI DATABASE ---
-    const contohDataPegawai = [
-        { id: 1, nama_lengkap: 'dr. H. Husodo Dewo Adi, Sp.OT(K),Spine,FICS', status: 'PNS', nip: '196505171991031013', jabatan: 'Direktur' },
-        { id: 2, nama_lengkap: 'dr. R.M. Willy Indrawilis, Sp.X.J', status: 'PNS', nip: '197607242005011003', jabatan: 'Wakil Direktur Pendidikan & Pengembangan' },
-        { id: 3, nama_lengkap: 'Dede Darmawan, S.Kep,Ners', status: 'PNS', nip: '198008012007011005', jabatan: 'Kepala Bidang Keperawatan' }
-    ];
-
-    const dbArsip = {
-        '1': { 'KTP': true, 'Ijazah S1': true, 'SK CPNS': false },
-        '2': { 'KTP': true, 'Ijazah S1': false, 'SK CPNS': false },
-        '3': { 'KTP': false, 'Ijazah S1': false, 'SK CPNS': false },
-    };
-
-    const jenisArsipList = ['KTP', 'Ijazah S1', 'SK CPNS', 'SK PNS', 'Kartu Keluarga'];
-
-    // --- ELEMEN HTML ---
+    // === DEKLARASI ELEMEN ===
     const tabelPegawaiBody = document.getElementById('tabel-pegawai-body');
-    const arsipModal = new bootstrap.Modal(document.getElementById('arsipModal'));
+    const searchInput = document.getElementById('search-input');
+    
+    // Elemen Modal
+    const arsipModalElement = document.getElementById('arsipModal');
+    const arsipModal = new bootstrap.Modal(arsipModalElement);
     const namaPegawaiModal = document.getElementById('nama-pegawai-modal');
     const tabelArsipDetailBody = document.getElementById('tabel-arsip-detail-body');
-    const uploadFileInput = document.getElementById('upload-file-input');
+    const formUploadArsip = document.getElementById('form-upload-arsip');
+    const uploadPegawaiIdInput = document.getElementById('upload-pegawai-id');
 
-    // --- FUNGSI-FUNGSI ---
+    let currentPegawaiId = null; // Menyimpan ID pegawai yang modalnya sedang dibuka
+
+    // === FUNGSI-FUNGSI UTAMA ===
+
+    // Fungsi untuk menampilkan daftar pegawai di tabel utama
     function tampilkanPegawai() {
-        tabelPegawaiBody.innerHTML = '';
-        contohDataPegawai.forEach((pegawai, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${pegawai.nama_lengkap}</td>
-                <td><span class="badge bg-secondary">${pegawai.status}</span></td>
-                <td>${pegawai.nip}</td>
-                <td>${pegawai.jabatan}</td>
-                <td>
-                    <button class="btn btn-primary btn-sm btn-kelola-arsip" data-id="${pegawai.id}" data-nama="${pegawai.nama_lengkap}">
-                        <i class="fas fa-folder-open"></i> Kelola Arsip
-                    </button>
-                </td>
-            `;
-            tabelPegawaiBody.appendChild(tr);
-        });
+        tabelPegawaiBody.innerHTML = `<tr><td colspan="6" class="text-center">Memuat data...</td></tr>`;
+        fetch('assets/api/get_list_pegawai.php')
+            .then(response => response.json())
+            .then(data => {
+                tabelPegawaiBody.innerHTML = '';
+                if (!data || data.length === 0) {
+                    tabelPegawaiBody.innerHTML = `<tr><td colspan="6" class="text-center">Belum ada data pegawai.</td></tr>`;
+                    return;
+                }
+                data.forEach((pegawai, index) => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${pegawai.nama_lengkap_gelar}</td>
+                        <td><span class="badge bg-secondary">${pegawai.status_pegawai || 'N/A'}</span></td>
+                        <td>${pegawai.nip || 'N/A'}</td>
+                        <td>${pegawai.jabatan || 'Belum ada jabatan'}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm btn-kelola-arsip" data-id="${pegawai.id}" data-nama="${pegawai.nama_lengkap_gelar}">
+                                <i class="fas fa-folder-open"></i> Kelola Arsip
+                            </button>
+                        </td>
+                    `;
+                    tabelPegawaiBody.appendChild(tr);
+                });
+            });
     }
 
-    function tampilkanDetailArsip(pegawaiId) {
-        tabelArsipDetailBody.innerHTML = '';
-        const arsipPegawai = dbArsip[pegawaiId] || {};
+    // Fungsi untuk memuat dan menampilkan daftar arsip di dalam modal
+    function loadArsipDetail(pegawaiId) {
+        currentPegawaiId = pegawaiId; // Set ID pegawai saat ini
+        tabelArsipDetailBody.innerHTML = `<tr><td colspan="4" class="text-center">Memuat arsip...</td></tr>`;
 
-        jenisArsipList.forEach(jenis => {
-            const sudahAda = arsipPegawai[jenis] === true;
-            const statusBadge = sudahAda
-                ? `<span class="badge bg-success">Sudah Diunggah</span>`
-                : `<span class="badge bg-warning text-dark">Belum Ada File</span>`;
-            
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${jenis}</td>
-                <td>${statusBadge}</td>
-                <td>
-                    <button class="btn btn-sm btn-info" ${!sudahAda && 'disabled'} title="Lihat File"><i class="fas fa-eye"></i></button>
-                    <button class="btn btn-sm btn-secondary btn-upload" data-pegawai-id="${pegawaiId}" data-jenis-arsip="${jenis}" title="Upload Baru"><i class="fas fa-upload"></i></button>
-                </td>
-            `;
-            tabelArsipDetailBody.appendChild(tr);
-        });
+        fetch(`assets/api/get_arsip_pegawai.php?pegawai_id=${pegawaiId}`)
+            .then(response => response.json())
+            .then(res => {
+                tabelArsipDetailBody.innerHTML = '';
+                if (res.success && res.data.length > 0) {
+                    res.data.forEach((arsip, index) => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${arsip.nama_arsip}</td>
+                            <td>${arsip.tanggal_upload}</td>
+                            <td>
+                                <a href="${arsip.path_file}" target="_blank" class="btn btn-sm btn-info" title="Lihat File">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <button class="btn btn-sm btn-danger btn-delete-arsip" data-id="${arsip.id}" title="Hapus Arsip">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        tabelArsipDetailBody.appendChild(tr);
+                    });
+                } else {
+                    tabelArsipDetailBody.innerHTML = `<tr><td colspan="4" class="text-center">Belum ada arsip yang diunggah.</td></tr>`;
+                }
+            });
     }
 
-    // --- EVENT LISTENERS ---
-    // Event listener untuk semua tombol "Kelola Arsip"
-    tabelPegawaiBody.addEventListener('click', function(event) {
-        const target = event.target.closest('.btn-kelola-arsip');
-        if (target) {
-            const pegawaiId = target.dataset.id;
-            const pegawaiNama = target.dataset.nama;
-            
+    // === EVENT LISTENERS ===
+
+    // Event listener untuk filter tabel pegawai
+    searchInput.addEventListener('input', function() {
+        const filterText = this.value.toLowerCase();
+        const rows = tabelPegawaiBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const namaPegawai = row.cells[1].textContent.toLowerCase();
+            row.style.display = namaPegawai.includes(filterText) ? "" : "none";
+        });
+    });
+
+    // Event listener untuk tombol "Kelola Arsip"
+    tabelPegawaiBody.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-kelola-arsip');
+        if (btn) {
+            const pegawaiId = btn.dataset.id;
+            const pegawaiNama = btn.dataset.nama;
+
             namaPegawaiModal.textContent = pegawaiNama;
-            tampilkanDetailArsip(pegawaiId);
+            uploadPegawaiIdInput.value = pegawaiId; // Set ID di form upload
+            loadArsipDetail(pegawaiId);
             arsipModal.show();
         }
     });
 
-    // Event listener untuk tombol "Upload" di dalam modal
-    tabelArsipDetailBody.addEventListener('click', function(event) {
-        const target = event.target.closest('.btn-upload');
-        if (target) {
-            uploadFileInput.click(); // Memicu dialog pilih file
-            
-            // Simpan data target untuk digunakan setelah file dipilih
-            uploadFileInput.dataset.pegawaiId = target.dataset.pegawaiId;
-            uploadFileInput.dataset.jenisArsip = target.dataset.jenisArsip;
+    // Event listener untuk form upload
+    formUploadArsip.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const submitButton = this.querySelector('button[type="submit"]');
+        submitButton.disabled = true;
+        submitButton.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+
+        fetch('assets/api/upload_arsip.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(res => {
+            alert(res.message);
+            if (res.success) {
+                this.reset(); // Kosongkan form setelah berhasil
+                loadArsipDetail(currentPegawaiId); // Muat ulang daftar arsip
+            }
+        })
+        .catch(error => {
+            console.error('Upload Error:', error);
+            alert('Terjadi kesalahan saat mengunggah.');
+        })
+        .finally(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = `<i class="fas fa-upload"></i> Unggah`;
+        });
+    });
+
+    // Event listener untuk tombol hapus di dalam modal
+    tabelArsipDetailBody.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-delete-arsip');
+        if (btn) {
+            if (confirm('Apakah Anda yakin ingin menghapus arsip ini secara permanen?')) {
+                const arsipId = btn.dataset.id;
+                const formData = new FormData();
+                formData.append('arsip_id', arsipId);
+
+                fetch('assets/api/delete_arsip.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(res => {
+                    alert(res.message);
+                    if (res.success) {
+                        loadArsipDetail(currentPegawaiId); // Muat ulang daftar arsip
+                    }
+                });
+            }
         }
     });
 
-    // Event listener untuk input file yang tersembunyi
-    uploadFileInput.addEventListener('change', function(event) {
-        if (event.target.files.length > 0) {
-            const pegawaiId = this.dataset.pegawaiId;
-            const jenisArsip = this.dataset.jenisArsip;
-            
-            alert(`Simulasi: Berhasil mengunggah file "${event.target.files[0].name}" untuk arsip "${jenisArsip}".`);
-            
-            // Update "database" simulasi
-            if (!dbArsip[pegawaiId]) dbArsip[pegawaiId] = {};
-            dbArsip[pegawaiId][jenisArsip] = true;
-
-            // Refresh tampilan modal
-            tampilkanDetailArsip(pegawaiId);
-
-            // Reset input file
-            this.value = ''; 
-        }
-    });
-
-    // --- INISIALISASI ---
+    // Panggil fungsi untuk memuat tabel pegawai saat halaman pertama kali dibuka
     tampilkanPegawai();
 });

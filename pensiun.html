@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Pensiun - Sistem Kepegawaian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body>
+    <aside class="main-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/img/logo.png" alt="Logo Instansi" class="sidebar-logo">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li><a href="data-personal.html"><i class="fas fa-id-card"></i><span>Data Personal</span></a></li>
+            <li><a href="riwayat-pegawai.html"><i class="fas fa-history"></i><span>Riwayat Pegawai</span></a></li>
+            <li><a href="manajemen-arsip.html"><i class="fas fa-archive"></i><span>Manajemen Arsip</span></a></li>
+            <li><a href="#"><i class="fas fa-database"></i><span>Master Data</span></a></li>
+            <li><a href="kgb.html"><i class="fas fa-chart-line"></i><span>KGB</span></a></li>
+            <li><a href="cuti.html"><i class="fas fa-calendar-alt"></i><span>Cuti</span></a></li>
+            <li><a href="penugasan.html"><i class="fas fa-briefcase"></i><span>Penugasan</span></a></li>
+            <li><a href="pensiun.html"><i class="fas fa-walking"></i><span>Pensiun</span></a></li>
+            <li><a href="rotasi.html"><i class="fas fa-sync-alt"></i><span>Rotasi</span></a></li>
+            <li><a href="mutasi.html"><i class="fas fa-exchange-alt"></i><span>Mutasi</span></a></li>
+            <li><a href="#"><i class="fas fa-folder-plus"></i><span>Arsip Lainnya</span></a></li>
+            <li><a href="#"><i class="fas fa-file-signature"></i><span>Kontrak Kerja</span></a></li>
+           <li><a href="surat-perintah.html"><i class="fas fa-envelope-open-text"></i><span>Surat Perintah</span></a></li>
+            <li><a href="surat-rekomendasi.html"><i class="fas fa-mail-bulk"></i><span>Manajemen Surat</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-pie"></i><span>Laporan</span></a></li>
+        </ul>
+    </aside>
+
+    <header class="main-header">
+        <div class="header-left">
+            <a href="#" id="toggleSidebarBtn"><i class="fas fa-bars"></i></a>
+        </div>
+        <div class="header-right">
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1 id="content-title">Pengajuan Pensiun</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#pensiunModal">
+                <i class="fas fa-plus"></i> Buat Pengajuan Pensiun
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Riwayat Pengajuan Pensiun
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama Pegawai</th>
+                                <th>NIP</th>
+                                <th>No. SK Pensiun</th>
+                                <th>Tanggal Pensiun</th>
+                                <th>Lampiran</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-pensiun-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="pensiunModal" tabindex="-1" aria-labelledby="pensiunModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pensiunModalLabel">Form Pengajuan Pensiun</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-pensiun" class="p-3">
+                        <input type="hidden" id="pensiun-pegawai-id" name="pegawai_id">
+                        <div class="row g-3">
+                            <div class="col-12 position-relative">
+                                <label for="pensiun-nama" class="form-label">Cari Nama Pegawai</label>
+                                <input type="text" id="pensiun-nama" class="form-control"
+                                    placeholder="Ketik nama untuk mencari..." autocomplete="off" required>
+                                <div id="search-results-pensiun" class="search-results-dropdown"></div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="pensiun-nip" class="form-label">NIP</label>
+                                <input type="text" id="pensiun-nip" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="pensiun-golongan" class="form-label">Golongan/Pangkat</label>
+                                <input type="text" id="pensiun-golongan" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="pensiun-jabatan" class="form-label">Jabatan</label>
+                                <input type="text" id="pensiun-jabatan" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="pensiun-unit-kerja" class="form-label">Unit Kerja</label>
+                                <input type="text" id="pensiun-unit-kerja" class="form-control" readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="pensiun-alamat-rumah" class="form-label">Alamat Rumah</label>
+                                <textarea id="pensiun-alamat-rumah" class="form-control" rows="3" readonly></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pensiun-alamat" class="form-label">Alamat Pensiun</label>
+                                <textarea id="pensiun-alamat" name="alamat_pensiun" class="form-control" rows="3"
+                                    required></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="pensiun-tanggal" class="form-label">Tanggal Pensiun</label>
+                                <input type="date" id="pensiun-tanggal" name="tanggal_pensiun" class="form-control"
+                                    required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="pensiun-no-sk" class="form-label">No. SK Pensiun</label>
+                                <input type="text" id="pensiun-no-sk" name="no_sk_pensiun" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="col-12 text-center mt-4">
+                                <label for="pensiun-lampiran" class="btn btn-outline-primary">
+                                    <i class="fas fa-paperclip"></i> Pilih Lampiran
+                                </label>
+                                <input type="file" id="pensiun-lampiran" name="path_lampiran" class="d-none">
+                                <p id="pensiun-file-name" class="text-muted mt-2 small"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" form="form-pensiun">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/pensiun.js"></script>
+</body>
+
+</html>

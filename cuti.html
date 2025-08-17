@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuti - Sistem Kepegawaian</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+
+<body>
+    <aside class="main-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/img/logo.png" alt="Logo Instansi" class="sidebar-logo">
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+            <li><a href="data-personal.html"><i class="fas fa-id-card"></i><span>Data Personal</span></a></li>
+            <li><a href="riwayat-pegawai.html"><i class="fas fa-history"></i><span>Riwayat Pegawai</span></a></li>
+            <li><a href="manajemen-arsip.html"><i class="fas fa-archive"></i><span>Manajemen Arsip</span></a></li>
+            <li><a href="#"><i class="fas fa-database"></i><span>Master Data</span></a></li>
+            <li><a href="kgb.html"><i class="fas fa-chart-line"></i><span>KGB</span></a></li>
+            <li><a href="cuti.html"><i class="fas fa-calendar-alt"></i><span>Cuti</span></a></li>
+            <li><a href="penugasan.html"><i class="fas fa-briefcase"></i><span>Penugasan</span></a></li>
+            <li><a href="pensiun.html"><i class="fas fa-walking"></i><span>Pensiun</span></a></li>
+            <li><a href="rotasi.html"><i class="fas fa-sync-alt"></i><span>Rotasi</span></a></li>
+            <li><a href="mutasi.html"><i class="fas fa-exchange-alt"></i><span>Mutasi</span></a></li>
+            <li><a href="#"><i class="fas fa-folder-plus"></i><span>Arsip Lainnya</span></a></li>
+            <li><a href="#"><i class="fas fa-file-signature"></i><span>Kontrak Kerja</span></a></li>
+            <li><a href="surat-perintah.html"><i class="fas fa-envelope-open-text"></i><span>Surat Perintah</span></a>
+            </li>
+            <li><a href="surat-rekomendasi.html"><i class="fas fa-mail-bulk"></i><span>Manajemen Surat</span></a></li>
+            <li><a href="#"><i class="fas fa-chart-pie"></i><span>Laporan</span></a></li>
+        </ul>
+    </aside>
+
+    <header class="main-header">
+        <div class="header-left">
+            <a href="#" id="toggleSidebarBtn"><i class="fas fa-bars"></i></a>
+        </div>
+        <div class="header-right">
+            <a href="#"><i class="fas fa-user"></i></a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="content-header">
+            <h1 id="content-title">Pengajuan Cuti Pegawai</h1>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cutiModal">
+                <i class="fas fa-plus"></i> Buat Pengajuan Cuti
+            </button>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Riwayat Pengajuan Cuti</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>No.</th>
+                                <th>Nama Pegawai</th>
+                                <th>Jenis Cuti</th>
+                                <th>Tanggal</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-cuti-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal fade" id="cutiModal" tabindex="-1" aria-labelledby="cutiModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cutiModalLabel">Form Pengajuan Cuti</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-cuti" class="p-3">
+                        <input type="hidden" id="cuti-pegawai-id" name="pegawai_id">
+                        <div class="row g-3">
+                            <div class="col-md-3 position-relative">
+                                <label for="cuti-nama" class="form-label">Nama Pegawai</label>
+                                <input type="text" id="cuti-nama" class="form-control"
+                                    placeholder="Ketik untuk mencari..." autocomplete="off" required>
+                                <div id="search-results-cuti" class="search-results-dropdown"></div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cuti-nip" class="form-label">NIP</label>
+                                <input type="text" id="cuti-nip" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cuti-status" class="form-label">Status Pegawai</label>
+                                <input type="text" id="cuti-status" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cuti-shift" class="form-label">Jenis Shift</label>
+                                <select id="cuti-shift" name="jenis_shift" class="form-select" required>
+                                    <option value="">Pilih...</option>
+                                    <option>Senin-Jumat</option>
+                                    <option>Senin-Sabtu</option>
+                                    <option>Shift Pagi</option>
+                                    <option>Shift Siang</option>
+                                    <option>Shift Malam</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="cuti-golongan" class="form-label">Golongan</label>
+                                <input type="text" id="cuti-golongan" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="cuti-jabatan" class="form-label">Jabatan</label>
+                                <input type="text" id="cuti-jabatan" class="form-control" readonly>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cuti-jenis" class="form-label">Jenis Cuti</label>
+                                <select id="cuti-jenis" name="jenis_cuti" class="form-select" required>
+                                    <option value="">Pilih...</option>
+                                    <option>Cuti Besar</option>
+                                    <option>Cuti Ibadah</option>
+                                    <option>Cuti Melahirkan</option>
+                                    <option>Cuti Sakit</option>
+                                    <option>Cuti Tahunan</option>
+                                    <option>Lainnya</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="cuti-mulai" class="form-label">Tanggal Mulai Cuti</label>
+                                <input type="date" id="cuti-mulai" name="tanggal_mulai" class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cuti-selesai" class="form-label">Tanggal Selesai Cuti</label>
+                                <input type="date" id="cuti-selesai" name="tanggal_selesai" class="form-control"
+                                    required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="cuti-alamat" class="form-label">Alamat Selama Cuti</label>
+                                <textarea id="cuti-alamat" name="alamat_selama_cuti" class="form-control"
+                                    rows="3"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="cuti-hp" class="form-label">No HP Selama Cuti</label>
+                                <input type="text" id="cuti-hp" name="no_hp_selama_cuti" class="form-control">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary" form="form-cuti">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/cuti.js"></script>
+</body>
+
+</html>
