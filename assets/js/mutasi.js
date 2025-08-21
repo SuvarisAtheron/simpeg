@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const lampiranInput = document.getElementById('mutasi-lampiran');
     const lampiranFileName = document.getElementById('mutasi-file-name');
 
+    // Elemen baru untuk pencarian
+    const searchMutasiInput = document.getElementById('search-mutasi-input');
+
     // === FUNGSI-FUNGSI ===
 
     function loadMutasiHistory() {
@@ -31,9 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             ? `<a href="${item.path_lampiran}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i> Lihat</a>`
                             : `<span class="text-muted">Tidak ada</span>`;
                         
+                        // **PERBAIKAN NAMA DENGAN GELAR**
                         tr.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${item.nama_lengkap}<br><small class="text-muted">NIP: ${item.nip}</small></td>
+                            <td>${item.nama_lengkap_gelar}<br><small class="text-muted">NIP: ${item.nip}</small></td>
                             <td>${item.unit_kerja_sebelumnya}</td>
                             <td>${item.instansi_baru}</td>
                             <td>${item.tanggal_mutasi}</td>
@@ -53,6 +57,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // === EVENT LISTENERS ===
+
+    // Event listener untuk kotak pencarian
+    searchMutasiInput.addEventListener('input', function() {
+        const filterText = this.value.toLowerCase();
+        const rows = tabelMutasiBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const namaNip = row.cells[1].textContent.toLowerCase();
+            if (namaNip.includes(filterText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
 
     mutasiModalElement.addEventListener('shown.bs.modal', function () {
         formMutasi.reset();

@@ -15,9 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const golonganInput = document.getElementById('cuti-golongan');
     const jabatanInput = document.getElementById('cuti-jabatan');
 
+    const searchCutiInput = document.getElementById('search-cuti-input');
+
     // === FUNGSI-FUNGSI ===
 
-    // Fungsi untuk memuat dan menampilkan riwayat cuti
     function loadCutiHistory() {
         tabelCutiBody.innerHTML = `<tr><td colspan="6" class="text-center">Memuat riwayat...</td></tr>`;
         fetch('assets/api/get_list_cuti.php')
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 actionButtons = `
                                     <button class="btn btn-sm btn-success btn-approve-cuti" data-id="${item.id}" title="Setujui"><i class="fas fa-check"></i></button>
                                     <button class="btn btn-sm btn-secondary btn-reject-cuti" data-id="${item.id}" title="Tolak"><i class="fas fa-times"></i></button>
-                                ` + actionButtons; // Tambahkan tombol hapus
+                                ` + actionButtons;
                                 break;
                             case 'Disetujui':
                                 statusBadge = `<span class="badge bg-success">Disetujui</span>`;
@@ -47,9 +48,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                 break;
                         }
 
+                        // **** INI BAGIAN YANG DIPERBAIKI ****
+                        // Pastikan kita memanggil 'item.nama_lengkap_gelar'
                         tr.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${item.nama_lengkap}<br><small class="text-muted">NIP: ${item.nip}</small></td>
+                            <td>${item.nama_lengkap_gelar}<br><small class="text-muted">NIP: ${item.nip}</small></td>
                             <td>${item.jenis_cuti}</td>
                             <td>${item.tanggal_mulai} s/d ${item.tanggal_selesai}</td>
                             <td>${statusBadge}</td>
@@ -63,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Fungsi untuk update status cuti
     function updateCutiStatus(id, status) {
         const formData = new FormData();
         formData.append('id', id);
@@ -84,10 +86,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // === EVENT LISTENERS ===
 
-    // 1. Membersihkan form saat modal dibuka
+    searchCutiInput.addEventListener('input', function () {
+        const filterText = this.value.toLowerCase();
+        const rows = tabelCutiBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const namaNip = row.cells[1].textContent.toLowerCase();
+            if (namaNip.includes(filterText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
     cutiModalElement.addEventListener('shown.bs.modal', () => formCuti.reset());
 
-    // 2. Pencarian pegawai
     namaInput.addEventListener('input', function () {
         const searchTerm = this.value;
         if (searchTerm.length < 3) {
@@ -114,7 +127,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
-    // 3. Memilih pegawai dari hasil pencarian
     searchResultsContainer.addEventListener('click', function (e) {
         if (e.target.classList.contains('search-result-item')) {
             const pegawaiId = e.target.dataset.id;
@@ -128,14 +140,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         nipInput.value = data.nip || '';
                         statusInput.value = data.status_pegawai || '';
                         golonganInput.value = data.golongan_terakhir || '';
-                        // Anda mungkin perlu API khusus untuk mendapatkan jabatan terakhir
                         jabatanInput.value = 'Jabatan Terakhir'; // Placeholder
                     }
                 });
         }
     });
 
-    // 4. Submit form pengajuan cuti baru
     formCuti.addEventListener('submit', function (e) {
         e.preventDefault();
         const submitButton = cutiModal._element.querySelector('button[type="submit"]');
@@ -160,7 +170,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     });
 
-    // 5. Aksi di tabel riwayat (Setuju/Tolak/Hapus)
     tabelCutiBody.addEventListener('click', function (e) {
         const approveBtn = e.target.closest('.btn-approve-cuti');
         const rejectBtn = e.target.closest('.btn-reject-cuti');

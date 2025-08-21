@@ -16,6 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const lampiranFileName = document.getElementById('lampiran-file-name');
     const tabelKgbBody = document.getElementById('tabel-kgb-body');
 
+    // ===== KODE BARU UNTUK PENCARIAN =====
+    const searchKgbInput = document.getElementById('search-kgb-input');
+    // ===== AKHIR KODE BARU =====
+
+
     // --- FUNGSI-FUNGSI ---
     function loadKgbHistory() {
         if (!tabelKgbBody) return;
@@ -31,7 +36,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         const periode = `${namaBulan[item.bulan_pengajuan]} ${item.tahun_pengajuan}`;
                         tr.innerHTML = `
                             <td>${index + 1}</td>
-                            <td>${item.nama_lengkap_gelar}</td> <td>${item.nip}</td>
+                            <td>${item.nama_lengkap_gelar}</td>
+                            <td>${item.nip}</td>
                             <td>${periode}</td>
                             <td>
                                 <a href="${item.path_lampiran}" target="_blank" class="btn btn-sm btn-outline-info">
@@ -53,6 +59,22 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // --- EVENT LISTENERS ---
+
+    // ===== KODE BARU UNTUK PENCARIAN =====
+    searchKgbInput.addEventListener('input', function () {
+        const filterText = this.value.toLowerCase();
+        const rows = tabelKgbBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            // Cek di kolom Nama (indeks 1) dan NIP (indeks 2)
+            const namaPegawai = row.cells[1].textContent.toLowerCase();
+            const nip = row.cells[2].textContent.toLowerCase();
+            if (namaPegawai.includes(filterText) || nip.includes(filterText)) {
+                row.style.display = ""; // Tampilkan baris
+            } else {
+                row.style.display = "none"; // Sembunyikan baris
+            }
+        });
+    });
 
     // 1. Mengisi tahun otomatis saat modal ditampilkan
     kgbModalElement.addEventListener('shown.bs.modal', function () {
@@ -139,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Silakan pilih pegawai dan lampirkan file terlebih dahulu.');
             return;
         }
-        
+
         submitButton.disabled = true;
         submitButton.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Menyimpan...`;
 
@@ -160,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 6. Event listener untuk tombol hapus di tabel riwayat
-    tabelKgbBody.addEventListener('click', function(e) {
+    tabelKgbBody.addEventListener('click', function (e) {
         const deleteButton = e.target.closest('.btn-delete-kgb');
         if (deleteButton) {
             if (confirm('Apakah Anda yakin ingin menghapus data pengajuan ini?')) {
@@ -172,13 +194,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.success) {
-                        loadKgbHistory(); // Muat ulang riwayat setelah berhasil hapus
-                    }
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        if (data.success) {
+                            loadKgbHistory(); // Muat ulang riwayat setelah berhasil hapus
+                        }
+                    });
             }
         }
     });

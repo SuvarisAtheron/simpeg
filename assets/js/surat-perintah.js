@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const lampiranInput = document.getElementById('surat-lampiran');
     const lampiranFileName = document.getElementById('surat-file-name');
 
+    // Elemen baru untuk pencarian
+    const searchSuratInput = document.getElementById('search-surat-input');
+
     // === FUNGSI-FUNGSI ===
 
     function loadSuratHistory() {
@@ -33,10 +36,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             ? `<a href="${item.path_lampiran}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i> Lihat</a>`
                             : `<span class="text-muted">Tidak ada</span>`;
                         
+                        // **PERBAIKAN NAMA DENGAN GELAR**
                         tr.innerHTML = `
                             <td>${index + 1}</td>
                             <td>${item.no_surat_perintah}</td>
-                            <td>${item.nama_lengkap}<br><small class="text-muted">NIP: ${item.nip}</small></td>
+                            <td>${item.nama_lengkap_gelar}<br><small class="text-muted">NIP: ${item.nip}</small></td>
                             <td>${item.jabatan_tugas_baru}</td>
                             <td>${item.tanggal_surat_perintah}</td>
                             <td>${fileButton}</td>
@@ -55,6 +59,20 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // === EVENT LISTENERS ===
+
+    // Event listener untuk kotak pencarian
+    searchSuratInput.addEventListener('input', function() {
+        const filterText = this.value.toLowerCase();
+        const rows = tabelSuratBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const namaNip = row.cells[2].textContent.toLowerCase(); // Kolom ke-3 berisi Nama & NIP
+            if (namaNip.includes(filterText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
 
     suratModalElement.addEventListener('shown.bs.modal', function () {
         formSurat.reset();

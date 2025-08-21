@@ -14,9 +14,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const fileInput = document.getElementById('tugas-file');
     const fileNameDisplay = document.getElementById('tugas-file-name');
 
+    // Elemen baru untuk pencarian
+    const searchTugasInput = document.getElementById('search-tugas-input');
+
     // === FUNGSI-FUNGSI ===
 
-    // Fungsi untuk memuat dan menampilkan riwayat tugas
     function loadTugasHistory() {
         tabelTugasBody.innerHTML = `<tr><td colspan="7" class="text-center">Memuat riwayat...</td></tr>`;
         fetch('assets/api/get_list_tugas.php')
@@ -30,10 +32,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             ? `<a href="${item.path_file}" target="_blank" class="btn btn-sm btn-outline-info"><i class="fas fa-eye"></i> Lihat</a>`
                             : `<span class="text-muted">Tidak ada</span>`;
                         
+                        // **PERBAIKAN NAMA DENGAN GELAR**
                         tr.innerHTML = `
                             <td>${index + 1}</td>
                             <td>${item.no_surat_tugas}</td>
-                            <td>${item.nama_lengkap}<br><small class="text-muted">NIP: ${item.nip}</small></td>
+                            <td>${item.nama_lengkap_gelar}<br><small class="text-muted">NIP: ${item.nip}</small></td>
                             <td>${item.lokasi_kegiatan}</td>
                             <td>${item.tanggal_mulai} s/d ${item.tanggal_selesai}</td>
                             <td>${fileButton}</td>
@@ -53,27 +56,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // === EVENT LISTENERS ===
 
-    // 1. Membersihkan form saat modal dibuka
+    // Event listener untuk kotak pencarian
+    searchTugasInput.addEventListener('input', function() {
+        const filterText = this.value.toLowerCase();
+        const rows = tabelTugasBody.querySelectorAll('tr');
+        rows.forEach(row => {
+            const namaNip = row.cells[2].textContent.toLowerCase(); // Kolom ke-3 berisi Nama & NIP
+            if (namaNip.includes(filterText)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
     tugasModalElement.addEventListener('shown.bs.modal', function () {
         formTugas.reset();
         searchResultsContainer.style.display = 'none';
         fileNameDisplay.textContent = '';
     });
 
-    // 2. Logika pencarian pegawai (sama seperti sebelumnya)
     namaInput.addEventListener('input', function() {
-        // ... (kode pencarian tidak perlu diubah, sudah benar)
+        const searchTerm = this.value; if (searchTerm.length < 3) { searchResultsContainer.style.display = 'none'; return; }
+        fetch(`assets/api/search_pegawai.php?term=${searchTerm}`).then(r => r.json()).then(data => {
+            searchResultsContainer.innerHTML = '';
+            if (data.length > 0) {
+                data.forEach(p => {
+                    const d = document.createElement('div'); d.className = 'search-result-item';
+                    d.textContent = `${p.nama_lengkap} (NIP: ${p.nip})`; d.dataset.id = p.id; d.dataset.nama = p.nama_lengkap;
+                    searchResultsContainer.appendChild(d);
+                }); searchResultsContainer.style.display = 'block';
+            } else { searchResultsContainer.style.display = 'none'; }
+        });
     });
+    
     searchResultsContainer.addEventListener('click', function(e) {
-        // ... (kode pemilihan tidak perlu diubah, sudah benar)
+        if (e.target.classList.contains('search-result-item')) {
+            const pId = e.target.dataset.id;
+            namaInput.value = e.target.dataset.nama;
+            searchResultsContainer.style.display = 'none';
+            fetch(`assets/api/get_data_personal.php?id=${pId}`).then(r => r.json()).then(data => {
+                if (data) {
+                    pegawaiIdInput.value = data.id; nipInput.value = data.nip || ''; golonganInput.value = data.golongan_terakhir || '';
+                }
+            });
+        }
     });
 
-    // 3. Menampilkan nama file yang dipilih
     fileInput.addEventListener('change', function() {
         fileNameDisplay.textContent = this.files.length > 0 ? `File dipilih: ${this.files[0].name}` : '';
     });
 
-    // 4. Submit form surat tugas baru
     formTugas.addEventListener('submit', function(e) {
         e.preventDefault();
         const submitButton = tugasModal._element.querySelector('button[type="submit"]');
@@ -89,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert(res.message);
             if (res.success) {
                 tugasModal.hide();
-                loadTugasHistory(); // Muat ulang riwayat
+                loadTugasHistory();
             }
         })
         .finally(() => {
@@ -98,7 +131,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // 5. Hapus surat tugas dari tabel riwayat
     tabelTugasBody.addEventListener('click', function(e) {
         const deleteButton = e.target.closest('.btn-delete-tugas');
         if (deleteButton) {
@@ -116,33 +148,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     });
             }
-        }
-    });
-
-    // (Kode event listener untuk search dan select pegawai)
-    namaInput.addEventListener('input', function() {
-        const searchTerm = this.value; if (searchTerm.length < 3) { searchResultsContainer.style.display = 'none'; return; }
-        fetch(`assets/api/search_pegawai.php?term=${searchTerm}`).then(r => r.json()).then(data => {
-            searchResultsContainer.innerHTML = '';
-            if (data.length > 0) {
-                data.forEach(p => {
-                    const d = document.createElement('div'); d.className = 'search-result-item';
-                    d.textContent = `${p.nama_lengkap} (NIP: ${p.nip})`; d.dataset.id = p.id; d.dataset.nama = p.nama_lengkap;
-                    searchResultsContainer.appendChild(d);
-                }); searchResultsContainer.style.display = 'block';
-            } else { searchResultsContainer.style.display = 'none'; }
-        });
-    });
-    searchResultsContainer.addEventListener('click', function(e) {
-        if (e.target.classList.contains('search-result-item')) {
-            const pId = e.target.dataset.id;
-            namaInput.value = e.target.dataset.nama;
-            searchResultsContainer.style.display = 'none';
-            fetch(`assets/api/get_data_personal.php?id=${pId}`).then(r => r.json()).then(data => {
-                if (data) {
-                    pegawaiIdInput.value = data.id; nipInput.value = data.nip || ''; golonganInput.value = data.golongan_terakhir || '';
-                }
-            });
         }
     });
 
