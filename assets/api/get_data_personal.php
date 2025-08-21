@@ -52,8 +52,12 @@ if ($pegawai_id > 0) {
             $stmt_ortu->execute();
             $result_ortu = $stmt_ortu->get_result();
             while ($row_ortu = $result_ortu->fetch_assoc()) {
-                $status = $row_ortu['status_orang_tua'];
-                $data['orang_tua'][$status] = $row_ortu;
+                // Perbaikan Logika: Gunakan status_orang_tua sebagai key
+                if($row_ortu['status_orang_tua'] == 'ayah') {
+                   $data['orang_tua']['bapak kandung'] = $row_ortu;
+                } else if ($row_ortu['status_orang_tua'] == 'ibu') {
+                   $data['orang_tua']['ibu kandung'] = $row_ortu;
+                }
             }
             $stmt_ortu->close();
         }

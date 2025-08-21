@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = 'data-personal.html';
         return;
     }
+    
+    // Tambahkan input hidden untuk ID pegawai
+    const hiddenIdInput = document.createElement('input');
+    hiddenIdInput.type = 'hidden';
+    hiddenIdInput.name = 'pegawai_id';
+    hiddenIdInput.value = employeeId;
+    form.prepend(hiddenIdInput);
+
 
     const fillValueByName = (name, value) => {
         const el = form.querySelector(`[name="${name}"]`);
@@ -63,11 +71,12 @@ document.addEventListener('DOMContentLoaded', function () {
             // Anak
             if (data.anak && data.anak.length > 0) {
                 const anakContainer = document.getElementById('container-anak');
+                anakContainer.innerHTML = ''; // Kosongkan dulu
                 data.anak.forEach(anak => {
                     const tpl = document.getElementById('template-anak').content.cloneNode(true);
                     for (const key in anak) {
-                        if (key !== "pegawai_id" && key !== "id")
-                            tpl.querySelector(`[name="anak[][${key}]"]`).value = anak[key] || '';
+                        const field = tpl.querySelector(`[name="anak[][${key}]"]`);
+                        if(field) field.value = anak[key] || '';
                     }
                     anakContainer.appendChild(tpl);
                 });
@@ -76,17 +85,35 @@ document.addEventListener('DOMContentLoaded', function () {
             // Saudara
             if (data.saudara && data.saudara.length > 0) {
                 const saudaraContainer = document.getElementById('container-saudara');
+                saudaraContainer.innerHTML = ''; // Kosongkan dulu
                 data.saudara.forEach(saudara => {
                     const tpl = document.getElementById('template-saudara').content.cloneNode(true);
-                    for (const key in saudara) {
-                        if (key !== "pegawai_id" && key !== "id")
-                            tpl.querySelector(`[name="saudara[][${key}]"]`).value = saudara[key] || '';
+                     for (const key in saudara) {
+                        const field = tpl.querySelector(`[name="saudara[][${key}]"]`);
+                        if(field) field.value = saudara[key] || '';
                     }
                     saudaraContainer.appendChild(tpl);
                 });
             }
         })
         .catch(err => console.error(err));
+        
+    // --- FUNGSI UNTUK MENAMBAH BARIS DINAMIS (ANAK/SAUDARA) ---
+    function setupDynamicRows(containerId, buttonId, templateId) {
+        const addButton = document.getElementById(buttonId);
+        const template = document.getElementById(templateId);
+        const container = document.getElementById(containerId);
+
+        if(addButton && template && container){ 
+            addButton.addEventListener('click', () => {
+                const clone = template.content.cloneNode(true);
+                container.appendChild(clone);
+            });
+        }
+    }
+
+    setupDynamicRows('container-anak', 'btn-tambah-anak', 'template-anak');
+    setupDynamicRows('container-saudara', 'btn-tambah-saudara', 'template-saudara');
 
     // Multi step form
     const steps = Array.from(form.querySelectorAll('.form-step'));
@@ -120,7 +147,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        alert('BACKEND untuk update data belum dihubungkan.');
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Updating...';
+
+        const formData = new FormData(form);
+
+        fetch('assets/api/update_pegawai.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+            alert(data.message);
+            if (data.success) {
+                window.location.href = `data-personal.html`;
+            }
+        })
+        .catch(err => {
+            console.error('Update Error:', err);
+            alert('Terjadi kesalahan saat update.');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = 'Update Data';
+        });
     });
 
     showStep(currentStep);
